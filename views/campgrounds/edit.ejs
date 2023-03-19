@@ -1,0 +1,85 @@
+<% layout('layout/boilerplate') %>
+    <div class="row">
+        <div class="col-6 offset-3">
+            <h1 class="text-center">Edit Campground</h1>
+            <form action="/campgrounds/<%=campground._id%>?_method=PUT" method="POST" novalidate class="validated-form"
+                enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label class="form-label" for="Title">Title</label>
+                    <input class="form-control" type="text" name="campground[title]" id="title"
+                        value="<%=campground.title %> " required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="location">Location</label>
+                    <input class="form-control" type="text" name="campground[location]" id="location"
+                        value="<%=campground.location %> " required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="price">Campground Price</label>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="price-label">$</span>
+                        <input name="campground[price]" type="text" class="form-control" id="price" placeholder="0.00"
+                            aria-describedby="price-label" value="<%=campground.price  %> " required>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea name="campground[description]" id="description" class="form-control"
+                        required><%=campground.description %> </textarea>
+                </div>
+                <label for="image">Add more images : </label>
+
+
+                <div class="input-group mb-3">
+                  
+                        <label class="input-group-text" for="image">Upload</label>
+                        <input type="file" class="form-control" id="image" name="image">
+                
+                </div>
+
+                <div mb-3>
+                    <% campground.images.forEach(function(img, i) {%>
+                        <img src="<%=img.thumbnail%>" class="img-thumbnail" alt="imge<%=i %>">
+                        <div class="form-check-inline">
+                            <input type="checkbox" name="deleteImages[]" id="img-<%=i%>" value="<%=img.filename %>">
+                        </div>
+                        <label for="img-<%=i%>">Delete</label>
+                        <% }) %>
+                </div>
+
+                <div class="mb-3">
+                    <button class="btn btn-info">Edit</button>
+                </div>
+            </form>
+            <!-- from here lets go to the campground we deleted -->
+            <div>
+                <a href="/campgrounds/<%=campground._id %> ">back</a>
+            </div>
+            <div>
+                <a href="/campgrounds">Campgrounds</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="/public/hello.js"></script>
+    <script>
+        (function () {
+            'use strict'
+            const forms = document.querySelectorAll('.not-validated');
+
+            Array.from(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', (event) => {
+                        if (!form.checkValidity()) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+
+                        form.classList.add('was-validated');
+                    }, false)
+
+                })
+
+        })()
+    </script>
